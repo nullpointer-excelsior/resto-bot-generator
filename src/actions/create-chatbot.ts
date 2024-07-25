@@ -1,11 +1,9 @@
-'use server';
-import { OPENAI_MODEL } from '@/config/constants';
-import { openai } from '@ai-sdk/openai';
-import { generateText } from 'ai';
-import { randomUUID } from 'crypto';
-import { restaurantService } from '../core/services/RestaurantService';
+'use server'
 
-
+import { randomUUID } from "crypto";
+import { restaurantRepository } from "@/core/repositories/RestaurantRepository";
+import { Restaurant } from "../core/model/Restaurant";
+import { CHAT_HOST_URL } from "../config/constants";
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
 # LA CANTINA
@@ -39,23 +37,6 @@ const OPENAI_FAKE_RESPONSE_TEXT = `
   Angus Steak & scrambled Eggs with fresh Guacamole, seasoned Potatoes & shredded Cheese.
 `
 
-async function requestModel(image: string) {
-    return await generateText({
-        model: openai(OPENAI_MODEL),
-        messages: [
-          {
-            content: [
-              { type: 'text', text: 'Del siguiente contenido extrae todo el texto y descripciones en formato markdown' },
-              {
-                type: 'image',
-                image: image,
-              },
-            ],
-            role: 'user'
-          }
-        ]
-      });
-}
 
 async function fakeRequestModel(image: string) {
     return {
@@ -63,20 +44,38 @@ async function fakeRequestModel(image: string) {
     }
 }
 
-export async function uploadMenu(data: FormData) {
+async function image2Base64(data: FormData) {
     const file: File | null = data.get('file') as unknown as File;
     if (!file) throw new Error('No file uploaded');
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const base64 = buffer.toString('base64');
-    console.log(`Base64 representation: `, data);
-  
-    const result = await fakeRequestModel(base64)
+    return buffer.toString('base64');
+}
+
+function generateChatbotUrl(restaurant: Restaurant) {
+    return CHAT_HOST_URL + `/${restaurant.id}`
+}
+
+export type CreateChatBotResponse = Restaurant & {
+    chatbotUrl: string
+}
+
+export async function createChatBot(formData: FormData): Promise<CreateChatBotResponse> {
+    
+    const b64Image = await image2Base64(formData)
+
+    const result = await fakeRequestModel(b64Image)
+    
     const restaurant = {
       id: randomUUID(),
-      name: data.get('name') as string,
+      name: formData.get('name') as string,
       menu: result.text,
     }
-    await restaurantService.save(restaurant)
-    return { message: 'ok', data: restaurant };
-  }
+    await restaurantRepository.save(restaurant)
+
+    return { 
+        chatbotUrl: generateChatbotUrl(restaurant),
+        ...restaurant
+     };
+
+}

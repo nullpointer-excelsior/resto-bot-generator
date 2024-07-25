@@ -1,8 +1,7 @@
 import { promises as fs } from 'fs';
 import { Restaurant } from "@/core/model/Restaurant";
-import { randomUUID } from 'crypto';
 
-export class RestaurantService {
+export class RestaurantRepository {
     private readonly filePath = './restaurants.json';
 
     constructor() {
@@ -47,4 +46,4 @@ export class RestaurantService {
 }
 
 // Ejemplo de uso:
-export const restaurantService = new RestaurantService();
+export const restaurantRepository = new RestaurantRepository();
