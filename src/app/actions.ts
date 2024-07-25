@@ -1,11 +1,12 @@
 'use server';
-
+import { randomUUID } from 'crypto';
 import { createStreamableValue, readStreamableValue } from 'ai/rsc';
 import { CoreMessage, generateText, streamText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { OPENAI_MODEL } from '@/config/constants';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import { restaurantService } from '../core/services/RestaurantService';
 
 export async function continueConversation(messages: CoreMessage[]) {
   const result = await streamText({
@@ -45,13 +46,9 @@ export async function uploadMenu(data: FormData) {
   const result = await generateText({
     model: openai(OPENAI_MODEL),
     messages: [
-      // {
-      //   content: "Del archivo proprcionado extraeras el texto y lo colocaras en un json legible",
-      //   role: 'system'
-      // },
       {
-        content:  [
-          { type: 'text', text: 'Dame todo el contenido del menu en formato markdown' },
+        content: [
+          { type: 'text', text: 'Del siguiente contenido extrae todo el texto y descripciones en formato markdown' },
           {
             type: 'image',
             image: base64,
@@ -61,7 +58,11 @@ export async function uploadMenu(data: FormData) {
       }
     ]
   });
-  
-console.log('result', result.text)
-  return { message: 'ok', data: result.text };
+  const id = randomUUID()
+  await restaurantService.save({
+    id,
+    name: 'Restaurant de churros',
+    menu: result.text,
+  })
+  return { message: 'ok', data: result.text, id };
 }

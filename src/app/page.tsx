@@ -2,7 +2,7 @@
 
 import { type CoreMessage } from 'ai';
 import { useState } from 'react';
-import { continueConversation } from './actions';
+import { continueConversation } from '@/actions/continue-conversation';
 import { readStreamableValue } from 'ai/rsc';
 
 // Allow streaming responses up to 30 seconds
