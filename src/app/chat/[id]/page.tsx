@@ -1,13 +1,25 @@
 import { restaurantRepository } from '@/core/repositories/RestaurantRepository'
+import Chat from '@/components/chat/Chat'
+import { notFound } from 'next/navigation';
 
-export default async function page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: Readonly<{ params: { id: string } }>) {
   const restaurant = await restaurantRepository.findById(params.id)
+  if (!restaurant) {
+    notFound()
+  }
+  // return (
+  //   <div className="p-4 max-w-screen-sm mx-auto bg-white rounded-xl shadow-md space-y-4">
+  //     <p className="text-2xl font-bold text-gray-900">Resto-bot</p>
+  //     <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">
+  //       {JSON.stringify(restaurant, null, 2)}
+  //     </pre>
+  //     <div className="h-4/5 mt-4">
+  //       <Chat restaurantId={params.id} />
+  //     </div>
+  //   </div>
+  // )
+
   return (
-    <>
-      <p>resto-bot</p>
-      <pre>
-        {JSON.stringify(restaurant, null, 2)}
-      </pre>
-    </>
+    <Chat restaurantId={params.id} />
   )
 }

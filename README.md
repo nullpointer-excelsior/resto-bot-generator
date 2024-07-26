@@ -15,6 +15,10 @@ npm run dev
 para ue extraiga el texto y lo muestre
 - [x] conectar formulario con server action
 - [x] generar una ruta app en base al menu y lo persista y muestre el link
+- [x] chat ui
+- [ ] create chat ui
+- [ ] pedidos view
+- [ ] paleta de colores
 - [ ] crear un bot en base a una ruta y lea la base de datos y cree el prompt
 - [ ] lista de bots
 
