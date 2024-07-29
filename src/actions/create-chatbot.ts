@@ -39,6 +39,7 @@ const OPENAI_FAKE_RESPONSE_TEXT = `
 
 
 async function fakeRequestModel(image: string) {
+    await new Promise(resolve => setTimeout(resolve, 4000));
     return {
         text: OPENAI_FAKE_RESPONSE_TEXT
     }

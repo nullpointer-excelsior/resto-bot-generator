@@ -4,7 +4,9 @@ import { type CoreMessage } from 'ai';
 import { readStreamableValue } from 'ai/rsc';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { chatbotConversation } from '../../actions/chatbot-conversation';
-import ChatbotToolbar from './ChatbotToolbar';
+import ChatToolbar from './ChatToolbar';
+import PrimaryButton from '../PrimaryButton';
+import TextInput from '../TextInput';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -212,7 +214,7 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
     <div className="h-screen flex flex-col justify-between">
 
       <div className='h-1/8'>
-        <ChatbotToolbar/>
+        <ChatToolbar/>
       </div>
 
       <div className="h-4/8 min-h-4/8 overflow-auto scroll-smooth">
@@ -224,13 +226,8 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
 
       <div className="h-1/8 bg-gray-700">
         <form className="flex flex-row justify-center p-4 space-x-2 " onSubmit={onSubmit}>
-          <input
-            className="basis-4/5 p-2 border border-gray-300 rounded shadow-xl"
-            value={input}
-            placeholder="Say something..."
-            onChange={e => setInput(e.target.value)}
-          />
-          <button className='basis-1/5 bg-red-700 rounded-md text-neutral-400'>ENVIAR</button>
+          <TextInput value={input} placeholder="Say something..." onChange={e => setInput(e.target.value)} />
+          <PrimaryButton>ENVIAR</PrimaryButton>
         </form>
         <div className='text-white  text-center p-6'>
           <p>RestoBot 2024</p>
