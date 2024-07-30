@@ -1,6 +1,5 @@
-import { BellDot, Bot } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
+import Navbar from '../../../components/chatbot/dashboard/Navbar';
 
 const Sidebar: React.FC = () => {
   return (
@@ -9,22 +8,7 @@ const Sidebar: React.FC = () => {
         <img src="/img/chatbot-avatar.webp" alt="Avatar" className="w-24 h-24 rounded-full my-8" />
         <h1 className="text-xl text-neutral-400 font-bold mb-2">RestoBot</h1>
       </div>
-      <nav className="flex-1 m-8 p-4 w-full">
-        <ul className="space-y-8">
-          <li>
-            <Link className="group flex items-center space-x-2 " href="/chatbot/dashboard/tables">
-              <Bot className='stroke-white group-hover:stroke-neutral-400' />
-              <p className="group-hover:text-neutral-400 text-white">Chatbots</p>
-            </Link>
-          </li>
-          <li>
-            <Link className="group flex items-center space-x-2" href="/chatbot/dashboard/orders">
-              <BellDot className='stroke-white group-hover:stroke-neutral-400' />
-              <p className="group-hover:text-neutral-400 text-white">Pedidos en espera</p>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <Navbar />
     </div>
   );
 };
