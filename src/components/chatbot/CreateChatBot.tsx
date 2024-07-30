@@ -76,11 +76,10 @@ function ChatBotInfo({ chatbot }: Readonly<{ chatbot: CreateChatBotResponse }>) 
   return (
     <div className="flex flex-col items-center justify-center p-10 border-neutral-400 border rounded-md">
       <div className="flex items-center space-x-2">
-
         <CircleCheckBig className='stroke-green-500'  />
         <span className="text-xl font-medium text-gray-500">Tu chatbot {chatbot.name} esta listo para trabajar!</span>
       </div>
-      <a href={chatbot.chatbotUrl} target="_blank" className="text-blue-500 hover:underline">Accese a tu dashboard ACÁ</a>
+      <a href={`/chatbot/${chatbot.id}`} target="_blank" className="text-blue-500 hover:underline">Accese a tu dashboard ACÁ</a>
     </div>
   )
 }
