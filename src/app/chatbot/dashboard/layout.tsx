@@ -17,9 +17,9 @@ const Header: React.FC = () => {
   return (
     <div className="bg-gray-700 text-neutral-400 ps-6 py-8 pe-6">
       <div className="text-lg py-2 flex justify-between items-center">
-        <span className='text-3xl font-bold'>Pedidos en espera</span>
+        <span className='text-3xl font-bold'>Restobot dashboard</span>
       </div>
-      <span className='text-base text-white'>En este dashboard podras visualizar los pedidos que tus clientes hacen por medio de restosbot</span>
+      <span className='text-base text-white'>En este dashboard podras visualizar los pedidos que tus clientes hacen por medio de restosbot y el acceso a los chatbots</span>
     </div>
   );
 };
@@ -37,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ dashboard }: LayoutProps) => {
       <Sidebar />
       <div className="flex-1 flex flex-col w-full">
         <Header />
-        <div className='p-4'>
+        <div className='flex-1 flex flex-col w-full text-xs rounded-sm h-96 p-8'>
           {dashboard}
         </div>
       </div>

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const NAVBAR_SELECTED_CLASS = 'bg-red-950 text-neutral-400'
+const NAVBAR_SELECTED_CLASS = 'bg-amber-800 text-neutral-400 stroke-neutral-400'
 const NAVBAR_UNSELECTED_CLASS = 'text-white'
 
 export default function Navbar() {
@@ -22,15 +22,15 @@ export default function Navbar() {
     return (
             <nav className="flex-1 m-8 w-full">
                 <ul className="">
-                    <li className={`${colorLinkChatbots} py-4 px-6`}>
+                    <li className={`${colorLinkChatbots} py-4 px-6 `}>
                         <Link className="group flex items-center space-x-2 " href="/chatbot/dashboard/chatbots">
-                            <Bot className='stroke-white group-hover:stroke-neutral-400' />
+                            <Bot className='group-hover:stroke-neutral-400' />
                             <p className="group-hover:text-neutral-400 ">Chatbots</p>
                         </Link>
                     </li>
-                    <li className={`${colorLinkOrders} py-4 px-6`}>
+                    <li className={`${colorLinkOrders} py-4 px-6 `}>
                         <Link className="group flex items-center space-x-2" href="/chatbot/dashboard/orders">
-                            <BellDot className='stroke-white group-hover:stroke-neutral-400' />
+                            <BellDot className=' group-hover:stroke-neutral-400' />
                             <p className="group-hover:text-neutral-400">Pedidos en espera</p>
                         </Link>
                     </li>
