@@ -2,8 +2,8 @@
 import { createChatBot, CreateChatBotResponse } from '@/actions/create-chatbot';
 import { CircleCheckBig, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
-import PrimaryButton from '../PrimaryButton';
-import TextInput from '../TextInput';
+import PrimaryButton from '../../PrimaryButton';
+import TextInput from '../../TextInput';
 
 interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
@@ -77,9 +77,10 @@ function ChatBotInfo({ chatbot }: Readonly<{ chatbot: CreateChatBotResponse }>) 
     <div className="flex flex-col items-center justify-center p-10 border-neutral-400 border rounded-md">
       <div className="flex items-center space-x-2">
         <CircleCheckBig className='stroke-green-500'  />
-        <span className="text-xl font-medium text-gray-500">Tu chatbot {chatbot.name} esta listo para trabajar!</span>
+        <span className="text-2xl font-medium text-gray-500">Tu chatbot {chatbot.name} esta listo para trabajar!</span>
       </div>
-      <a href={`/chatbot/${chatbot.id}`} target="_blank" className="text-blue-500 hover:underline">Accese a tu dashboard ACÁ</a>
+      <a href={`/chat/${chatbot.id}`} target="_blank" className="text-blue-500 text-base hover:underline">Accese a tu chatbot ACÁ</a>
+      <a href={`/orders/${chatbot.id}`} target="_blank" className="text-blue-500 text-base hover:underline">Accese a tu los pedidos ACÁ</a>
     </div>
   )
 }

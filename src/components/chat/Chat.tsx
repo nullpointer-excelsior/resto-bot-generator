@@ -11,16 +11,37 @@ import TextInput from '../TextInput';
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+function MessageIndicatorUser() {
+  return (
+    <div className="flex flex-row-reverse">
+      <div className={`w-0 h-0 border-l-[0px] border-r-[25px] border-b-[20px] border-transparent border-b-lime-800 transform rotate-180`}></div>
+    </div>
+  )
+}
+
+function MessageIndicatorChatbot() {
+  return (
+    <div className="flex flex-row">
+      <div className={`w-0 h-0 border-l-[25px] border-r-[0px] border-b-[20px] border-transparent border-b-gray-800 transform rotate-180`}></div>
+    </div>
+  )
+}
 
 function Message({ message }: Readonly<{ message: CoreMessage }>) {
   const { role, content } = message;
-  const bgColor = role === 'user' ? 'bg-blue-300 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl' : 'bg-orange-300 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl';
   const roleName = role === 'user' ? 'User' : 'RestoBot';
+  const messageCssClasses = role === 'user' ? 'bg-lime-800 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl text-end' : 'bg-gray-800 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl ';
+  const messageDirectionFlexClass = role === 'user' ? 'flex-row-reverse' : 'flex-row';
 
   return (
-    <div className={`whitespace-pre-wrap p-4 px-8 m-4 text-zinc-700 shadow-md  ${bgColor}`}>
-      <p className='font-semibold'>{roleName}</p>
-      <p>{content as string}</p>
+    <div className={`flex ${messageDirectionFlexClass}`}>
+      <div className='w-4/5 m-4'>
+        <div className={`whitespace-pre-wrap p-4 px-8  text-neutral-300 shadow-md  ${messageCssClasses}`}>
+          <p className='text-xl font-semibold text-cyan-500'>{roleName}</p>
+          <p>{content as string}</p>
+        </div>
+        { role === 'user' ? <MessageIndicatorUser/>: <MessageIndicatorChatbot />}
+      </div>
     </div>
   );
 }
@@ -214,17 +235,19 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
     <div className="h-screen flex flex-col justify-between">
 
       <div className='h-1/8'>
-        <ChatToolbar/>
+        <ChatToolbar />
       </div>
 
       <div className="h-4/8 min-h-4/8 overflow-auto scroll-smooth">
-        <div className='flex flex-col bg-gray-300'>
-          {messages.map((m, i) => <Message message={m} key={i} />)}
+        <div className='flex flex-col bg-fixed' style={{ backgroundImage: "url(/img/bg.webp)" }}>
+          <div className='bg-black/60'>
+            {messages.map((m, i) => <Message message={m} key={i} />)}
+          </div>
           <div ref={messagesEndRef} />
         </div>
       </div>
 
-      <div className="h-1/8 bg-gray-700">
+      <div className="h-1/8 bg-orange-800">
         <form className="flex flex-row justify-center p-4 space-x-2 " onSubmit={onSubmit}>
           <TextInput value={input} placeholder="Say something..." onChange={e => setInput(e.target.value)} />
           <PrimaryButton>ENVIAR</PrimaryButton>

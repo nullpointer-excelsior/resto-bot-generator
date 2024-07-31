@@ -1,5 +1,5 @@
 import React from 'react'
-import { restaurantRepository } from '../../../../../core/repositories/RestaurantRepository';
+import { restaurantRepository } from '@/core/repositories/RestaurantRepository';
 
 const orders = [
   { tableNumber: 1, items: ['1 cerveza', '1 ensalada césar'], time: 'hace 2 minutos' },

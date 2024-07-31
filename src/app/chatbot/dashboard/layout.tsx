@@ -30,8 +30,7 @@ type LayoutProps = {
   params: { id: string }
 }
 
-const Layout: React.FC<LayoutProps> = ({ dashboard }: LayoutProps) => {
-
+const Layout: React.FC<LayoutProps> = async ({ dashboard, params }: LayoutProps) => {
   return (
     <div className="flex h-screen">
       <Sidebar />

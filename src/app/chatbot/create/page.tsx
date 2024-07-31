@@ -1,4 +1,4 @@
-import CreateChatBot from '@/components/chatbot/CreateChatBot';
+import CreateChatBot from '@/components/chatbot/create/CreateChatBot';
 
 
 function SidebarCard() {
