@@ -54,8 +54,8 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
   }, [messages]);
 
   return (
-    <div className='bg-fixed h-screen' style={{ backgroundImage: "url(/img/bg.webp)" }}>
-      <div className="h-screen flex flex-col justify-between bg-black/50" >
+    <div className='bg-fixed h-screen'>
+      <div className="h-screen flex flex-col justify-between" >
         <div className='h-1/8'>
           <ChatToolbar typing={typing} />
           <p>{typing}</p>

@@ -16,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gray-500">{children}</body>
+      <body style={{ backgroundImage: "url(/img/bg.webp)" }}>
+        <div className="bg-black/50 h-screen" >
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

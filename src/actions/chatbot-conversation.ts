@@ -1,11 +1,11 @@
 'use server';
 import { OPENAI_MODEL } from '@/config/constants';
 import { openai } from '@ai-sdk/openai';
-import { CoreMessage, generateText, streamText, tool } from 'ai';
-import { createStreamableValue } from 'ai/rsc';
+import { CoreMessage, generateText, tool } from 'ai';
+import { z } from 'zod';
 import { Restaurant } from '../core/model/Restaurant';
 import { restaurantRepository } from '../core/repositories/RestaurantRepository';
-import { z } from 'zod';
+import { orderService } from '../core/services/OrderService';
 
 // const createPrompt = (restaurant: Restaurant) => `
 // Actua como un garzon amable y cortez
@@ -48,9 +48,7 @@ export async function chatbotConversation(restaurantId: string, messages: CoreMe
         description: "Crea y envia una lista de productos que el usuario quiere pedir del menu",
         parameters: toolSchema,
         execute: async ({ products }: any) => {
-          products.forEach(({ name, quantity }: any) => {
-            console.log(`Items a pedir: ${name}: ${quantity}`);
-          })
+          await orderService.send(products)
           return "Los productos han sido enviados"
         },
         
@@ -58,8 +56,6 @@ export async function chatbotConversation(restaurantId: string, messages: CoreMe
       
     },
   });
-  // const stream = createStreamableValue(result.textStream);
-  // return { message: stream.value };
   return { message: result.text }
 }
 

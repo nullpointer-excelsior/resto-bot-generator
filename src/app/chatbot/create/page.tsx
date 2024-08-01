@@ -11,15 +11,17 @@ function SidebarCard() {
   )
 }
 
-export default function Page() {
+export default function Page() {//className="bg-black/50 "
   return (
-      <div className="flex m-20 shadow-md">
-        <div className='bg-orange-900 basis-2/5 rounded-s-lg'>
+    <div className='p-20'>
+      <div className="flex shadow-md ">
+        <div className='bg-orange-800 basis-2/5 rounded-s-lg'>
           <SidebarCard />
         </div>
         <div className='bg-gray-800 basis-3/5 rounded-e-lg p-10 text-sm'>
           <CreateChatBot />
         </div>
       </div>
+    </div>
   );
 };
