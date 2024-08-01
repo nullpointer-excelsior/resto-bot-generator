@@ -4,10 +4,6 @@ import { Restaurant } from "@/core/model/Restaurant";
 export class RestaurantRepository {
     private readonly filePath = './restaurants.json';
 
-    constructor() {
-        console.log("RestaurantService started.");
-    }
-
     private async readFromFile(): Promise<Record<string, Restaurant>> {
         try {
             const data = await fs.readFile(this.filePath, 'utf8');
