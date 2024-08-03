@@ -9,7 +9,7 @@ interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
 }
 
-export function CreateChatBotForm({ onSubmit }: CreateChatBotFormProps) {
+export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
   const [filename, setFilename] = useState('Archivo no seleccionado')

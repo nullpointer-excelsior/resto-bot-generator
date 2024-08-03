@@ -40,6 +40,3 @@ export class RestaurantRepository {
         return data[id];
     }
 }
-
-// Ejemplo de uso:
-export const restaurantRepository = new RestaurantRepository();

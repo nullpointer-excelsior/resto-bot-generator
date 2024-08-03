@@ -1,9 +1,9 @@
 'use server'
 
 import { randomUUID } from "crypto";
-import { restaurantRepository } from "@/core/repositories/RestaurantRepository";
 import { Restaurant } from "../core/model/Restaurant";
 import { CHAT_HOST_URL } from "../config/constants";
+import { getRestaurantRepository } from "@/core/ContainerService";
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
 # LA CANTINA
@@ -37,6 +37,7 @@ const OPENAI_FAKE_RESPONSE_TEXT = `
   Angus Steak & scrambled Eggs with fresh Guacamole, seasoned Potatoes & shredded Cheese.
 `
 
+const restaurantRepository = getRestaurantRepository()
 
 async function fakeRequestModel(image: string) {
     await new Promise(resolve => setTimeout(resolve, 2000));

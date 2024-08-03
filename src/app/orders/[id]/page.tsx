@@ -1,6 +1,7 @@
 import React from 'react'
-import { restaurantRepository } from '@/core/repositories/RestaurantRepository';
 import OrderList from '@/components/orders/OrderList';
+import { getRestaurantRepository } from '@/core/ContainerService';
+import OrdersPending from '@/components/orders/OrdersPending';
 
 const orders = [
   { tableNumber: 1, items: ['1 cerveza', '1 ensalada césar'], time: 'hace 2 minutos' },
@@ -52,13 +53,15 @@ const orders = [
   },
 ];
 
+const restaurantRepository = getRestaurantRepository()
+
 
 export default async function Page({ params }: { params: { id: string } }) {
   const chatbot = await restaurantRepository.findById(params.id)
-
+  if (!chatbot) {
+    return <p>Chatbot no encontrado</p>
+  }
   return (
-    <div className="overflow-y-auto w-full" >
-      <OrderList orders={orders} />
-    </div>
+    <OrdersPending chatbot={chatbot.id} />
   )
 }

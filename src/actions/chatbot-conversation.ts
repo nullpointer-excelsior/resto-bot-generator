@@ -1,11 +1,11 @@
 'use server';
 import { OPENAI_MODEL } from '@/config/constants';
+import { getOrderService, getRestaurantRepository } from '@/core/ContainerService';
+import { Restaurant } from '@/core/model/Restaurant';
 import { openai } from '@ai-sdk/openai';
 import { CoreMessage, generateText, tool } from 'ai';
 import { z } from 'zod';
-import { Restaurant } from '../core/model/Restaurant';
-import { restaurantRepository } from '../core/repositories/RestaurantRepository';
-import { orderService } from '../core/services/OrderService';
+import { Product } from '../core/model/Order';
 
 // const createPrompt = (restaurant: Restaurant) => `
 // Actua como un garzon amable y cortez
@@ -14,6 +14,9 @@ import { orderService } from '../core/services/OrderService';
 // [INTRUCCIONES]: tomaras el pedido del cliente y crearas la orden con la funcion "createOrder"
 // [INSTRUCCIONES]: considera las siguientes variables:
 // `;
+
+const orderService = getOrderService()
+const restaurantRepository = getRestaurantRepository()
 
 const createPrompt = (restaurant: Restaurant) => `
 Actua como un garzon amable y cortez tu nombre RestoBot
@@ -47,8 +50,8 @@ export async function chatbotConversation(restaurantId: string, messages: CoreMe
       createOrder: tool({
         description: "Crea y envia una lista de productos que el usuario quiere pedir del menu",
         parameters: toolSchema,
-        execute: async ({ products }: any) => {
-          await orderService.send(products)
+        execute: async ({ products }: { products: Product[]}) => {
+          await orderService.send({ products, chatbot: restaurant.id })
           return "Los productos han sido enviados"
         },
         
