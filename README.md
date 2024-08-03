@@ -20,8 +20,11 @@ para ue extraiga el texto y lo muestre
 - [x] pedidos view
 - [x] paleta de colores
 - [x] crear un bot en base a una ruta y lea la base de datos y cree el prompt
-- [ ] integrar ordenes con firebase
-- [ ] leer ordenes de firebase
+- [x] integrar ordenes con firebase
+- [x] leer ordenes de firebase
 - [ ] OPENAI_API_KEY configurable por el usuario
-- [ ] ui ordenes
+- [x] ui ordenes
+- [ ] notificaciones en al actualizar ordenes
+- [ ] despliegue
+- [ ] read pdf
 
