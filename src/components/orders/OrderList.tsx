@@ -1,4 +1,4 @@
-import { PendingOrder } from "../../core/model/PendingOrder";
+import { PendingOrderDocument } from "./model/order-pending-document";
 
 interface OrderItemProps {
     tableNumber: number;
@@ -38,8 +38,9 @@ const OrderItem: React.FC<OrderItemProps> = ({ tableNumber, items, time }) => {
 };
 
 
-export default function OrderList({ orders }: Readonly<{ orders: PendingOrder[] }>) {
+export default function OrderList({ orders }: Readonly<{ orders: PendingOrderDocument[] }>) {
     const sortedOrders = [...orders].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
     return (
         <>
             {sortedOrders.map((order, index) => (

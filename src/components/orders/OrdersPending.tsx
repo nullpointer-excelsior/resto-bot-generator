@@ -1,22 +1,24 @@
 'use client'
 import OrderList from '@/components/orders/OrderList';
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PendingOrder } from '../../core/model/PendingOrder';
 import { db } from '../../lib/firebase/web-firebase';
+import { PendingOrderDocument } from './model/order-pending-document';
 
 
 
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
-    const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([])
+    const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
 
     useEffect(() => {
         const q = query(collection(db, "orders"), where("chatbot", "==", chatbot));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const orders: PendingOrder[] = []
+            const orders: PendingOrderDocument[] = []
             querySnapshot.forEach((doc) => {
                 const data = doc.data()
                 const order = {
+                    id: doc.id,
                     items: data.items,
                     timestamp: data.timestamp.toDate(),
                     tableNumber: data.tableNumber,
@@ -29,15 +31,25 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
                 ...pendingOrders,
                 ...orders
             ])
-
+            
         });
         return () => unsubscribe();
     }, [])
 
-    useEffect(() => console.log('pending-orders', pendingOrders), [pendingOrders])
+    useEffect(() => {
+        console.log('pending-orders', pendingOrders)
+        scrollToTop()
+    }, [pendingOrders])
+
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToTop = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     return (
         <div className="overflow-y-auto w-full" >
+            <div ref={messagesEndRef}></div>
             <OrderList orders={pendingOrders} />
         </div>
     )
