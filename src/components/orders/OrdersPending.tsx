@@ -2,17 +2,17 @@
 import OrderList from '@/components/orders/OrderList';
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from 'react';
-import { PendingOrder } from '../../core/model/PendingOrder';
 import { db } from '../../lib/firebase/web-firebase';
 import { PendingOrderDocument } from './model/order-pending-document';
 
 
 
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
+    
     const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
 
     useEffect(() => {
-        const q = query(collection(db, "orders"), where("chatbot", "==", chatbot));
+        const q = query(collection(db, "orders"), where("chatbot", "==", chatbot), where("isPending", "==", true));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const orders: PendingOrderDocument[] = []
             querySnapshot.forEach((doc) => {
