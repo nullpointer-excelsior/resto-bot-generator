@@ -78,6 +78,7 @@ async function image2Base64(data: FormData) {
     throw new Error('No file uploaded')
   };
   const validMimeTypes = ['application/pdf', 'image/png', 'image/jpg', 'image/jpeg']
+  //const validMimeTypes = ['application/pdf', ]
   if (!validMimeTypes.includes(file.type)) {
     throw new Error('Filetype not supported: ' + file.type);
   }

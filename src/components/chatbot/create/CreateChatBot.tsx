@@ -1,11 +1,13 @@
 "use client";
 import { createChatBot, CreateChatBotResponse } from '@/actions/create-chatbot';
 import { CircleCheckBig, FileUp } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PrimaryButton from '../../PrimaryButton';
 import TextInput from '../../TextInput';
 import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
 import { getUserStorage } from '@/lib/localstorage';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
@@ -47,7 +49,7 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
       <div className='flex items-center space-x-4'>
         <span className='basis-1/5 text-base font-semibold'>Nombre</span>
         <TextInput
-        className='bg-transparent text-white'
+          className='bg-transparent text-white'
           placeholder='Nombre del Chatbot'
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -82,7 +84,7 @@ function ChatBotInfo({ chatbot }: Readonly<{ chatbot: CreateChatBotResponse }>) 
   return (
     <div className="flex flex-col items-center justify-center p-10 border-neutral-400 border rounded-md">
       <div className="flex items-center space-x-2">
-        <CircleCheckBig className='stroke-green-500'  />
+        <CircleCheckBig className='stroke-green-500' />
         <span className="text-2xl font-medium text-gray-500">Tu chatbot {chatbot.name} esta listo para trabajar!</span>
       </div>
       <a href={`/chat/${chatbot.id}`} target="_blank" className="text-blue-500 text-base hover:underline">Accese a tu chatbot ACÁ</a>
@@ -121,14 +123,36 @@ export default function CreateMenuRestaurant() {
     setShowForm(false)
     createChatBot(formData)
       .then(response => setChatbot(response))
-      .then(() => setLoadingChatbot(false))
+      .catch(e => {
+        toast.error(`Ups!!: ${e.message}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+      });
+      })
+      .finally(() => {
+        setLoadingChatbot(false)
+        setShowForm(true)
+      })
   }
 
+  useEffect(() => {
+    
+  }, [])
+
   return (
-    <div className='flex justify-center items-center h-96'>
-      {showForm && <CreateChatBotForm onSubmit={onSubmit} />}
-      {loadingChatbot && <Loading message='Creando chatbot...' />}
-      {chatbot && <ChatBotInfo chatbot={chatbot} />}
-    </div>
+    <>
+      <div className='flex justify-center items-center h-96'>
+        {showForm && <CreateChatBotForm onSubmit={onSubmit} />}
+        {loadingChatbot && <Loading message='Creando chatbot...' />}
+        {chatbot && <ChatBotInfo chatbot={chatbot} />}
+      </div>
+      <ToastContainer />
+    </>
   )
 }

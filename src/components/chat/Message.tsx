@@ -24,7 +24,7 @@ export default function Message({ message }: Readonly<{ message: CoreMessage }>)
     return (
         <div className={`flex ${messageDirectionFlexClass}`}>
             <div className='w-4/5 m-4'>
-                <div className={`whitespace-pre-wrap p-4 px-8  text-neutral-300 shadow-md  ${messageCssClasses}`}>
+                <div className={`whitespace-pre-wrap p-4 px-8  text-neutral-300 shadow-md ${messageCssClasses}`}>
                     <p className='text-xl font-semibold text-cyan-500'>{roleName}</p>
                     <p>{content as string}</p>
                 </div>

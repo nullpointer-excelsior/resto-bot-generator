@@ -36,4 +36,5 @@ para ue extraiga el texto y lo muestre
 - [ ] fotos y descripcion
 - [ ] seguridad firebase
 - [ ] not found page ui
+- [ ] error control
 
