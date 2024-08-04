@@ -24,7 +24,8 @@ para ue extraiga el texto y lo muestre
 - [x] leer ordenes de firebase
 - [ ] OPENAI_API_KEY configurable por el usuario
 - [x] ui ordenes
-- [ ] notificaciones en al actualizar ordenes
+- [x] notificaciones en al actualizar ordenes
 - [ ] despliegue
 - [ ] read pdf
+- [ ] sonido al llegar una orden
 

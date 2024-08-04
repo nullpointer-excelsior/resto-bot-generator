@@ -7,6 +7,7 @@ import { chatbotConversation } from '../../actions/chatbot-conversation';
 import PrimaryButton from '../PrimaryButton';
 import TextInput from '../TextInput';
 import ChatToolbar from './ChatToolbar';
+import useValidateOpenAiApiKey from '../../app/hooks/useValidateOpenAiApiKey';
 
 
 
@@ -19,6 +20,7 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
   ]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false)
+  useValidateOpenAiApiKey()
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

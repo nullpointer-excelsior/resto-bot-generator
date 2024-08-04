@@ -2,7 +2,6 @@
 
 import { randomUUID } from "crypto";
 import { Restaurant } from "../core/model/Restaurant";
-import { CHAT_HOST_URL } from "../config/constants";
 import { getRestaurantRepository } from "@/core/ContainerService";
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
@@ -55,7 +54,7 @@ async function image2Base64(data: FormData) {
 }
 
 function generateChatbotUrl(restaurant: Restaurant) {
-    return CHAT_HOST_URL + `/${restaurant.id}`
+    return process.env.CHAT_HOST_URL + `/${restaurant.id}`
 }
 
 export type CreateChatBotResponse = Restaurant & {
