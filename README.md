@@ -27,5 +27,12 @@ para ue extraiga el texto y lo muestre
 - [x] notificaciones en al actualizar ordenes
 - [ ] despliegue
 - [ ] read pdf
-- [ ] sonido al llegar una orden
+- [x] sonido al llegar una orden
+- [ ] select model in create chatbot
+- [ ] escribiendo como mensaje para mas claridad en chat
+- [ ] id corta
+- [ ] ejemplos de menu para subir
+- [ ] fotos y descripcion
+- [ ] seguridad firebase
+- [ ] not found page ui
 

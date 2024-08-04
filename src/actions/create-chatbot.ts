@@ -61,7 +61,7 @@ async function requestModel({ base64, apikey }: { base64: string, apikey: string
     messages: [
       {
         content: [
-          { type: 'text', text: 'Dame todo el contenido del menu en formato markdown' },
+          { type: 'text', text: 'Dame todo el contenido del menu de forma descriptiva' },
           {
             type: 'image',
             image: base64,

@@ -8,8 +8,6 @@ import { db } from '../../lib/firebase/web-firebase';
 import { PendingOrderDocument } from './model/order-pending-document';
 import useValidateOpenAiApiKey from '../../app/hooks/useValidateOpenAiApiKey';
 
-
-
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
 
     const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
@@ -42,8 +40,14 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
 
     useEffect(() => {
         console.log('pending-orders', pendingOrders)
+        playSound()
         scrollToTop()
     }, [pendingOrders])
+
+    const playSound = () => {
+        const audio = new Audio('/alert-order.mp3');
+        audio.play();
+    };
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
