@@ -20,19 +20,19 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }: OrderItemProps) => {
     const { tableNumber, timestamp, items, id } = order
 
     const onCLickOrder = (orderId: string) => {
+        toast.success(`Orden mesa ${tableNumber} tomada! ${items.join("\n")}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
         const docRef = doc(db, "orders", orderId);
         updateDoc(docRef, { isPending: false }).then(() => {
             console.log("document-id", orderId)
-            toast.success(`Orden mesa ${tableNumber} tomada! ${items.join("\n")}`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
         })
     }
 

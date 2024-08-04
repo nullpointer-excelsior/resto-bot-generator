@@ -6,13 +6,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { db } from '../../lib/firebase/web-firebase';
 import { PendingOrderDocument } from './model/order-pending-document';
+import useValidateOpenAiApiKey from '../../app/hooks/useValidateOpenAiApiKey';
 
 
 
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
 
     const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
-
+    useValidateOpenAiApiKey()
+    
     useEffect(() => {
         const q = query(collection(db, "orders"), where("chatbot", "==", chatbot), where("isPending", "==", true));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {

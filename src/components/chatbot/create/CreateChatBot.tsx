@@ -4,6 +4,7 @@ import { CircleCheckBig, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import PrimaryButton from '../../PrimaryButton';
 import TextInput from '../../TextInput';
+import useValidateOpenAiApiKey from '../../../app/hooks/useValidateOpenAiApiKey';
 
 interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
@@ -43,6 +44,7 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
       <div className='flex items-center space-x-4'>
         <span className='basis-1/5 text-base font-semibold'>Nombre</span>
         <TextInput
+        className='bg-transparent text-white'
           placeholder='Nombre del Chatbot'
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -107,6 +109,7 @@ export default function CreateMenuRestaurant() {
   const [chatbot, setChatbot] = useState<CreateChatBotResponse | null>(null)
   const [loadingChatbot, setLoadingChatbot] = useState(false)
   const [showForm, setShowForm] = useState(true)
+  useValidateOpenAiApiKey()
 
   const onSubmit = (formData: FormData) => {
     setLoadingChatbot(true)

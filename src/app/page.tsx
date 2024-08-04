@@ -2,12 +2,18 @@
 import { useState } from "react";
 import TextInput from "../components/TextInput";
 import PrimaryButton from "../components/PrimaryButton";
-
+import { saveUserStorage } from "../lib/localstorage";
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
-  const [name, setName] = useState('')
-  const handleSubmit = (e: any) => {
+  const [apikey, setApikey] = useState('')
+  const router = useRouter()
 
+  const handleSubmit = (e: any) => {
+    saveUserStorage({
+      openaiApiKey: apikey
+    })
+    router.push("/chatbot/create")
   }
   return (
     <div className="p-20 flex flex-col items-center">
@@ -19,10 +25,10 @@ export default function Page() {
             <TextInput
               className="bg-transparent text-white w-2/3"
               placeholder='OpenAI API KEY'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={apikey}
+              onChange={(e) => setApikey(e.target.value)}
             />
-            <PrimaryButton className='w-56' disabled={name === ''} onClick={handleSubmit}>REGISTRAR APIKEY</PrimaryButton>
+            <PrimaryButton className='w-56' disabled={apikey === ''} onClick={handleSubmit}>REGISTRAR APIKEY</PrimaryButton>
           </div>
         </div>
       </div>
