@@ -2,13 +2,15 @@
 import OrderList from '@/components/orders/OrderList';
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { db } from '../../lib/firebase/web-firebase';
 import { PendingOrderDocument } from './model/order-pending-document';
 
 
 
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
-    
+
     const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
 
     useEffect(() => {
@@ -31,7 +33,7 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
                 ...pendingOrders,
                 ...orders
             ])
-            
+
         });
         return () => unsubscribe();
     }, [])
@@ -48,9 +50,12 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
     };
 
     return (
-        <div className="overflow-y-auto w-full" >
-            <div ref={messagesEndRef}></div>
-            <OrderList orders={pendingOrders} />
-        </div>
+        <>
+            <div className="overflow-y-auto w-full flex flex-col items-center" >
+                <div ref={messagesEndRef}></div>
+                <OrderList orders={pendingOrders} />
+            </div>
+            <ToastContainer />
+        </>
     )
 }
