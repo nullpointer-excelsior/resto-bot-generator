@@ -10,15 +10,15 @@ export function saveUserStorage(jsonObject: UserStorage): void {
     localStorage.setItem(USER_STORAGE_KEY, jsonString);
 }
 
-export function getUserStorage(): UserStorage | null {
+export function getUserStorage(): UserStorage {
     const jsonString = localStorage.getItem(USER_STORAGE_KEY);
     if (jsonString) {
         try {
             return JSON.parse(jsonString);
         } catch (error) {
             console.error('Error parsing JSON from localStorage', error);
-            return null
+            throw new Error('Openai api key not defined')
         }
     }
-    return null;
+    throw new Error('Openai api key not defined')
 }

@@ -9,7 +9,7 @@ if (!getApps().length) {
     initializeApp();
 }
 
-const restaurantRepository = new RestaurantRepository()
+const restaurantRepository = new RestaurantRepository(getFirestore())
 
 const orderService = new OrderService(getFirestore())
 

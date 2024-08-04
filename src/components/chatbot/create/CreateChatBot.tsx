@@ -4,7 +4,8 @@ import { CircleCheckBig, FileUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import PrimaryButton from '../../PrimaryButton';
 import TextInput from '../../TextInput';
-import useValidateOpenAiApiKey from '../../../app/hooks/useValidateOpenAiApiKey';
+import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
+import { getUserStorage } from '@/lib/localstorage';
 
 interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
@@ -23,7 +24,9 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
   const handleSubmit = async () => {
     const file = fileInput.current?.files?.[0];
     if (name && file) {
+      const storage = getUserStorage()
       const formData = new FormData();
+      formData.append('apikey', storage.openaiApiKey);
       formData.append('name', name);
       formData.append('file', file);
       onSubmit(formData);
@@ -112,6 +115,7 @@ export default function CreateMenuRestaurant() {
   useValidateOpenAiApiKey()
 
   const onSubmit = (formData: FormData) => {
+    
     setLoadingChatbot(true)
     setShowForm(false)
     createChatBot(formData)

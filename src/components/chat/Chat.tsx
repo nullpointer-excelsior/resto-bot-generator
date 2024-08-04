@@ -3,12 +3,12 @@
 import Message from '@/components/chat/Message';
 import { type CoreMessage } from 'ai';
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { chatbotConversation } from '../../actions/chatbot-conversation';
+import { chatbotConversation } from '@/actions/chatbot-conversation';
 import PrimaryButton from '../PrimaryButton';
 import TextInput from '../TextInput';
 import ChatToolbar from './ChatToolbar';
-import useValidateOpenAiApiKey from '../../app/hooks/useValidateOpenAiApiKey';
-
+import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
+import { getUserStorage } from '@/lib/localstorage';
 
 
 export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }>) {
@@ -25,6 +25,7 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTyping(true)
+    const apikey = getUserStorage().openaiApiKey
     const newMessages: CoreMessage[] = [
       ...messages,
       { content: input, role: 'user' },
@@ -33,7 +34,7 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
     setMessages(newMessages);
     setInput('');
 
-    const result = await chatbotConversation(restaurantId, newMessages);
+    const result = await chatbotConversation(apikey, restaurantId, newMessages);
     setTyping(false)
     setMessages([
       ...newMessages,

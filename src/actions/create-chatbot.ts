@@ -3,6 +3,12 @@
 import { randomUUID } from "crypto";
 import { Restaurant } from "../core/model/Restaurant";
 import { getRestaurantRepository } from "@/core/ContainerService";
+import { generateText } from "ai";
+// import { openai } from "@ai-sdk/openai";
+import { OPENAI_MODEL } from "../config/constants";
+import { createOpenAI } from '@ai-sdk/openai';
+
+
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
 # LA CANTINA
@@ -39,44 +45,71 @@ const OPENAI_FAKE_RESPONSE_TEXT = `
 const restaurantRepository = getRestaurantRepository()
 
 async function fakeRequestModel(image: string) {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return {
-        text: OPENAI_FAKE_RESPONSE_TEXT
-    }
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  return {
+    text: OPENAI_FAKE_RESPONSE_TEXT
+  }
+}
+
+async function requestModel({ base64, apikey }: { base64: string, apikey: string }) {
+  const openaiModel = createOpenAI({
+    apiKey: apikey,
+    compatibility: 'strict', // strict mode, enable when using the OpenAI API
+  });
+  const result = await generateText({
+    model: openaiModel(OPENAI_MODEL),
+    messages: [
+      {
+        content: [
+          { type: 'text', text: 'Dame todo el contenido del menu en formato markdown' },
+          {
+            type: 'image',
+            image: base64,
+          },
+        ],
+        role: 'user'
+      }
+    ]
+  });
+  return result
 }
 
 async function image2Base64(data: FormData) {
-    const file: File | null = data.get('file') as unknown as File;
-    if (!file) throw new Error('No file uploaded');
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    return buffer.toString('base64');
+  const file: File | null = data.get('file') as unknown as File;
+  if (!file) throw new Error('No file uploaded');
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+  return buffer.toString('base64');
 }
 
 function generateChatbotUrl(restaurant: Restaurant) {
-    return process.env.CHAT_HOST_URL + `/${restaurant.id}`
+  return process.env.CHAT_HOST_URL + `/${restaurant.id}`
 }
 
 export type CreateChatBotResponse = Restaurant & {
-    chatbotUrl: string
+  chatbotUrl: string
 }
 
 export async function createChatBot(formData: FormData): Promise<CreateChatBotResponse> {
-    
-    const b64Image = await image2Base64(formData)
 
-    const result = await fakeRequestModel(b64Image)
-    
-    const restaurant = {
-      id: randomUUID(),
-      name: formData.get('name') as string,
-      menu: result.text,
-    }
-    await restaurantRepository.save(restaurant)
+  const b64Image = await image2Base64(formData)
+  const apikey = formData.get('apikey')
+  if (!apikey) {
+    throw new Error('Openai Apikey not defined!')
+  }
 
-    return { 
-        chatbotUrl: generateChatbotUrl(restaurant),
-        ...restaurant
-     };
+  const result = await requestModel({ base64: b64Image, apikey: apikey as string })
+
+  const restaurant = {
+    id: randomUUID(),
+    name: formData.get('name') as string,
+    menu: result.text,
+  }
+  await restaurantRepository.save(restaurant)
+
+  return {
+    chatbotUrl: generateChatbotUrl(restaurant),
+    ...restaurant
+  };
 
 }

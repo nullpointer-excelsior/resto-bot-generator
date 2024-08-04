@@ -2,24 +2,17 @@
 import { OPENAI_MODEL } from '@/config/constants';
 import { getOrderService, getRestaurantRepository } from '@/core/ContainerService';
 import { Restaurant } from '@/core/model/Restaurant';
-import { openai } from '@ai-sdk/openai';
+// import { openai } from '@ai-sdk/openai';
 import { CoreMessage, generateText, tool } from 'ai';
 import { z } from 'zod';
 import { Product } from '../core/model/Order';
-
-// const createPrompt = (restaurant: Restaurant) => `
-// Actua como un garzon amable y cortez
-// [INSTRUCCIONES]: resuelve las dudas sobre las comidas y bebestibles del siguiente menu \`\`\`${restaurant.menu}\`\`\`
-// [INSTRUCCIONES]: debes devolver una respuesta rapida y corta.
-// [INTRUCCIONES]: tomaras el pedido del cliente y crearas la orden con la funcion "createOrder"
-// [INSTRUCCIONES]: considera las siguientes variables:
-// `;
+import { createOpenAI } from '@ai-sdk/openai';
 
 const orderService = getOrderService()
 const restaurantRepository = getRestaurantRepository()
 
 const createPrompt = (restaurant: Restaurant) => `
-Actua como un garzon amable y cortez tu nombre RestoBot
+Actua como un garzon amable y cortez tu nombre es RestoBot
 [INSTRUCCIONES]: resuelve las dudas sobre las comidas y bebestibles del siguiente menu \`\`\`${restaurant.menu}\`\`\`
 [INSTRUCCIONES]: debes devolver una respuesta rapida y corta.
 [INTRUCCIONES]: tomaras el pedido del cliente y crearas la orden con la funcion "createOrder"
@@ -36,11 +29,14 @@ const toolSchema = z.object({
 
 
 
-export async function chatbotConversation(restaurantId: string, messages: CoreMessage[]) {
+export async function chatbotConversation(apikey: string, restaurantId: string, messages: CoreMessage[]) {
   const restaurant = await restaurantRepository.findById(restaurantId)
   if (!restaurant) {
     throw new Error(`Restaurant(id="${restaurantId}") Not Found`)
   }
+  const openai = createOpenAI({
+    apiKey: apikey,
+  })
   const result = await generateText({
     model: openai(OPENAI_MODEL),
     system: createPrompt(restaurant),
