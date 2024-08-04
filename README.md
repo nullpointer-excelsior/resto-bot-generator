@@ -22,7 +22,7 @@ para ue extraiga el texto y lo muestre
 - [x] crear un bot en base a una ruta y lea la base de datos y cree el prompt
 - [x] integrar ordenes con firebase
 - [x] leer ordenes de firebase
-- [ ] OPENAI_API_KEY configurable por el usuario
+- [x] OPENAI_API_KEY configurable por el usuario
 - [x] ui ordenes
 - [x] notificaciones en al actualizar ordenes
 - [ ] despliegue

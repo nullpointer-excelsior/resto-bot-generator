@@ -62,6 +62,7 @@ export default function OrderList({ orders }: Readonly<{ orders: PendingOrderDoc
 
     return (
         <>
+            {sortedOrders.length === 0 && <p className="text-white text-3xl">No hay pedidos</p>}
             {sortedOrders.map((order, index) => (
                 <OrderItem key={index} order={order} />
             ))}
