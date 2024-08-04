@@ -1,13 +1,11 @@
 'use server'
 
-import { randomUUID } from "crypto";
-import { Restaurant } from "../core/model/Restaurant";
 import { getRestaurantRepository } from "@/core/ContainerService";
-import { generateText } from "ai";
-// import { openai } from "@ai-sdk/openai";
-import { OPENAI_MODEL } from "../config/constants";
 import { createOpenAI } from '@ai-sdk/openai';
-
+import { generateText } from "ai";
+import { randomUUID } from "crypto";
+import { OPENAI_MODEL } from "../config/constants";
+import { Restaurant } from "../core/model/Restaurant";
 
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
@@ -76,7 +74,22 @@ async function requestModel({ base64, apikey }: { base64: string, apikey: string
 
 async function image2Base64(data: FormData) {
   const file: File | null = data.get('file') as unknown as File;
-  if (!file) throw new Error('No file uploaded');
+  if (!file) {
+    throw new Error('No file uploaded')
+  };
+  const validMimeTypes = ['application/pdf', 'image/png', 'image/jpg', 'image/jpeg']
+  if (!validMimeTypes.includes(file.type)) {
+    throw new Error('Filetype not supported: ' + file.type);
+  }
+  const maxUploadSize = 1024 * 1024 * 5; // 5MB
+  if (file.size >= maxUploadSize) {
+    throw new Error('File size must be less than 5MB');
+  }
+  const validExtensions = ['pdf', 'png', 'jpg', 'jpeg'];
+  const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  if (!fileExtension || !validExtensions.includes(fileExtension)) {
+    throw new Error('File extension not supported: ' + fileExtension);
+  }
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   return buffer.toString('base64');

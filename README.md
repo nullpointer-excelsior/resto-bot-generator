@@ -28,8 +28,9 @@ para ue extraiga el texto y lo muestre
 - [ ] despliegue
 - [ ] read pdf
 - [x] sonido al llegar una orden
+- [x] sanitize files
 - [ ] select model in create chatbot
-- [ ] escribiendo como mensaje para mas claridad en chat
+- [x] escribiendo como mensaje para mas claridad en chat
 - [ ] id corta
 - [ ] ejemplos de menu para subir
 - [ ] fotos y descripcion

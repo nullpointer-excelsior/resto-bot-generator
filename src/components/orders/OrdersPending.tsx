@@ -36,11 +36,12 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
         });
         return () => unsubscribe();
     }, [])
+
     
     useEffect(() => {
         console.log('pending-orders', pendingOrders)
-        playSound()
         scrollToTop()
+        playSound()
     }, [pendingOrders])
 
     const playSound = () => {

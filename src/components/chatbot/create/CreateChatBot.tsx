@@ -61,6 +61,7 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
             id="doc"
             hidden
             type="file"
+            accept=".jpg,.jpeg,.png,.pdf"
             name="file"
             ref={fileInput}
             onChange={e => setFilename(fileInput.current?.files?.[0].name || 'Archivo no seleccionado')}
