@@ -9,7 +9,32 @@ import TextInput from '../TextInput';
 import ChatToolbar from './ChatToolbar';
 import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
 import { getUserStorage } from '@/lib/localstorage';
+import { TypingMessage } from './TypingMessage';
 
+
+
+
+function Typing() {
+  const [dots, setDots] = useState('');
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prevDots => {
+        if (prevDots.length < 3) {
+          return prevDots + '.';
+        } else {
+          return '';
+        }
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+  return (
+    <p className='text-2xl text-lime-600 font-semibold bg-black/60 p-2'>
+      Restobot está pensando{dots}
+    </p>
+  );
+};
 
 export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }>) {
   const [messages, setMessages] = useState<CoreMessage[]>([
@@ -60,16 +85,16 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
     <div className='bg-fixed h-screen'>
       <div className="h-screen flex flex-col justify-between" >
         <div className='h-1/8'>
-          <ChatToolbar typing={typing} />
-          <p>{typing}</p>
+          <ChatToolbar />
         </div>
 
         <div className="h-4/8 min-h-4/8 overflow-auto scroll-smooth" >
           <div className='flex flex-col' >
-              {messages.map((m, i) => <Message message={m} key={i} />)}
+            {messages.map((m, i) => <Message message={m} key={i} />)}
             <div ref={messagesEndRef} />
           </div>
         </div>
+        {typing && <TypingMessage />}
 
         <div className="h-1/8 bg-orange-800">
           <form className="flex flex-row justify-center p-4 space-x-2 " onSubmit={onSubmit}>

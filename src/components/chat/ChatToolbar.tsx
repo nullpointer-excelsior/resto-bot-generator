@@ -1,5 +1,5 @@
 
-export default function ChatbotToolbar({ typing }: Readonly<{ typing: boolean }>) {
+export default function ChatbotToolbar() {
   return (
     <div className="flex items-center justify-between bg-orange-800 p-4">
       <div className="flex items-center">
@@ -7,7 +7,7 @@ export default function ChatbotToolbar({ typing }: Readonly<{ typing: boolean }>
         <div>
           <h1 className="text-white font-bold text-3xl">RestoBot</h1>
           <p className="text-gray-400 text-base">
-            {typing ? 'Escribiendo...' : 'Asistente IA de Restaurant'}
+            Asistente IA de Restaurant
           </p>
         </div>
       </div>
