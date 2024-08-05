@@ -1,19 +1,35 @@
 "use client";
 import { createChatBot, CreateChatBotResponse } from '@/actions/create-chatbot';
-import { CircleCheckBig, FileUp } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import PrimaryButton from '../../PrimaryButton';
-import TextInput from '../../TextInput';
 import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
 import { getUserStorage } from '@/lib/localstorage';
+import { CircleCheckBig, FileUp } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PrimaryButton from '../../PrimaryButton';
+import TextInput from '../../TextInput';
+import TryMenus from './TryMenus';
 
 interface CreateChatBotFormProps {
   onSubmit: (data: FormData) => void;
 }
 
 export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>) {
+
+  const optionMenus = [
+    {
+      imgSrc: "/menus/cervecitas.jpg",
+      description: "Cervezas"
+    },
+    {
+      imgSrc: "/menus/almuerzos.jpg",
+      description: "Almuerzos"
+    },
+    {
+      imgSrc: "/menus/mexicana.jpg",
+      description: "Mexicana"
+    }
+  ]
   const fileInput = useRef<HTMLInputElement>(null);
   const [name, setName] = useState('');
   const [filename, setFilename] = useState('Archivo no seleccionado')
@@ -44,8 +60,25 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
     }
   }
 
+  const onChangeTryMenu = async (img: string) => {
+    try {
+      const response = await fetch(img);
+      const blob = await response.blob();
+      const file = new File([blob], img.split('/').pop()!, { type: blob.type });
+      if (fileInput.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.current.files = dataTransfer.files;
+        setFilename(file.name);
+      }
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  }
+
+
   return (
-    <form className="flex w-full flex-col gap-4 text-neutral-300" onSubmit={(e) => e.preventDefault()}>
+    <form className="flex w-full mt-10 flex-col gap-4 text-neutral-300" onSubmit={(e) => e.preventDefault()}>
       <div className='flex items-center space-x-4'>
         <span className='basis-1/5 text-base font-semibold'>Nombre</span>
         <TextInput
@@ -57,8 +90,8 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
       </div>
       <div className='flex items-center space-x-4'>
         <span className='basis-1/5 text-base font-semibold'>Menu</span>
-        <label htmlFor="doc">
-          <FileUp className='w-10 h-10 hover:cursor-pointer' />
+        <label htmlFor="doc" className=' flex items-center space-x-4 hover:cursor-pointer'>
+          <FileUp className='w-10 h-10 ' />
           <input
             id="doc"
             hidden
@@ -66,14 +99,17 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
             accept=".jpg,.jpeg,.png,.pdf"
             name="file"
             ref={fileInput}
-            onChange={e => setFilename(fileInput.current?.files?.[0].name || 'Archivo no seleccionado')}
+            onChange={e => setFilename(fileInput.current?.files?.[0]?.name || 'Archivo no seleccionado')}
             className="basis-4/5 border border-blue-500 rounded p-2"
           />
+          <p>{filename}</p>
         </label>
-        <p>{filename}</p>
       </div>
       <div className='flex flex-col my-4 items-center'>
         <PrimaryButton className='w-56' disabled={disableSubmit()} onClick={handleSubmit}>CREAR</PrimaryButton>
+      </div>
+      <div className='py-10'>
+        <TryMenus onChange={onChangeTryMenu} options={optionMenus} />
       </div>
     </form>
   );
@@ -118,11 +154,14 @@ export default function CreateMenuRestaurant() {
   useValidateOpenAiApiKey()
 
   const onSubmit = (formData: FormData) => {
-    
+
     setLoadingChatbot(true)
     setShowForm(false)
     createChatBot(formData)
-      .then(response => setChatbot(response))
+      .then(response => {
+        setChatbot(response)
+        setShowForm(false)
+      })
       .catch(e => {
         toast.error(`Ups!!: ${e.message}`, {
           position: "top-right",
@@ -133,25 +172,24 @@ export default function CreateMenuRestaurant() {
           draggable: true,
           progress: undefined,
           theme: "dark",
-      });
+        });
+        setShowForm(true)
       })
       .finally(() => {
         setLoadingChatbot(false)
-        setShowForm(true)
       })
   }
 
-  useEffect(() => {
-    
-  }, [])
+
 
   return (
     <>
-      <div className='flex justify-center items-center h-96'>
+      <div className='flex justify-center items-center'>
         {showForm && <CreateChatBotForm onSubmit={onSubmit} />}
         {loadingChatbot && <Loading message='Creando chatbot...' />}
         {chatbot && <ChatBotInfo chatbot={chatbot} />}
       </div>
+
       <ToastContainer />
     </>
   )

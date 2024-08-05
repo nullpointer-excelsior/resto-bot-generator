@@ -26,15 +26,14 @@ para ue extraiga el texto y lo muestre
 - [x] ui ordenes
 - [x] notificaciones en al actualizar ordenes
 - [ ] despliegue
-- [ ] read pdf
 - [x] sonido al llegar una orden
 - [x] sanitize files
 - [ ] select model in create chatbot
 - [x] escribiendo como mensaje para mas claridad en chat
 - [ ] id corta
-- [ ] ejemplos de menu para subir
+- [x] ejemplos de menu para subir
 - [ ] fotos y descripcion
 - [ ] seguridad firebase
 - [ ] not found page ui
-- [ ] error control
+- [x] error control
 
