@@ -44,7 +44,6 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
         if ( environment === 'prod') {
             console.log('app-chek initizialized')
             const captchaKey = process.env.NEXT_PUBLIC_CAPTCHA_PUBLIC_KEY
-            // console.log('capcha', captchaKey)
             if (!captchaKey) {
                 throw new Error('Captcha key not defined!')
             }
@@ -55,7 +54,6 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
         }
     }, [])
 
-    
     useEffect(() => {
         console.log('pending-orders', pendingOrders)
         scrollToTop()
