@@ -1,13 +1,15 @@
 "use client";
-import { createChatBot, CreateChatBotResponse } from '@/actions/create-chatbot';
+import { createChatBot } from '@/actions/create-chatbot';
 import useValidateOpenAiApiKey from '@/app/hooks/useValidateOpenAiApiKey';
 import { getUserStorage } from '@/lib/localstorage';
-import { CircleCheckBig, FileUp } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { FileUp } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrimaryButton from '../../PrimaryButton';
 import TextInput from '../../TextInput';
+import ChatBotInfo, { CreateChatBotResponse } from './ChatBotInfo';
+import Loading from './Loading';
 import TryMenus from './TryMenus';
 
 interface CreateChatBotFormProps {
@@ -116,35 +118,6 @@ export function CreateChatBotForm({ onSubmit }: Readonly<CreateChatBotFormProps>
 }
 
 
-function ChatBotInfo({ chatbot }: Readonly<{ chatbot: CreateChatBotResponse }>) {
-  return (
-    <div className="flex flex-col items-center justify-center p-10 border-neutral-400 border rounded-md">
-      <div className="flex items-center space-x-2">
-        <CircleCheckBig className='stroke-green-500' />
-        <span className="text-2xl font-medium text-gray-500">Tu chatbot {chatbot.name} esta listo para trabajar!</span>
-      </div>
-      <a href={`/chat/${chatbot.id}`} target="_blank" className="text-blue-500 text-base hover:underline">Accese a tu chatbot ACÁ</a>
-      <a href={`/orders/${chatbot.id}`} target="_blank" className="text-blue-500 text-base hover:underline">Accese a tu los pedidos ACÁ</a>
-    </div>
-  )
-}
-
-interface LoadingProps {
-  message: string;
-}
-
-const Loading: React.FC<LoadingProps> = ({ message }) => {
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="flex items-center space-x-2">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white text-blue-500" role="output">
-        </div>
-        <span className="text-lg font-medium text-gray-500">{message}</span>
-      </div>
-    </div>
-  );
-};
-
 
 export default function CreateMenuRestaurant() {
 
@@ -180,16 +153,13 @@ export default function CreateMenuRestaurant() {
       })
   }
 
-
-
   return (
     <>
-      <div className='flex justify-center items-center'>
+      <div className='flex justify-center items-center flex-col content-center h-full'>
         {showForm && <CreateChatBotForm onSubmit={onSubmit} />}
         {loadingChatbot && <Loading message='Creando chatbot...' />}
         {chatbot && <ChatBotInfo chatbot={chatbot} />}
       </div>
-
       <ToastContainer />
     </>
   )

@@ -6,6 +6,7 @@ import { generateText } from "ai";
 import { randomUUID } from "crypto";
 import { OPENAI_MODEL } from "../config/constants";
 import { Restaurant } from "../core/model/Restaurant";
+import { CreateChatBotResponse } from "../components/chatbot/create/ChatBotInfo";
 
 
 const OPENAI_FAKE_RESPONSE_TEXT = `
@@ -98,10 +99,6 @@ async function image2Base64(data: FormData) {
 
 function generateChatbotUrl(restaurant: Restaurant) {
   return process.env.CHAT_HOST_URL + `/${restaurant.id}`
-}
-
-export type CreateChatBotResponse = Restaurant & {
-  chatbotUrl: string
 }
 
 export async function createChatBot(formData: FormData): Promise<CreateChatBotResponse> {
