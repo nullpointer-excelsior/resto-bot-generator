@@ -11,13 +11,19 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_MEASURENMENT_ID,
 };
-const environment =  process.env.ENVIRONMENT
+const environment =  process.env.NEXT_PUBLIC_ENVIRONMENT
+console.log('Environment:', environment)
 
 const app = initializeApp(firebaseConfig);
 
 if ( environment === 'prod') {
+    console.log('app-chek initizialized')
+    const captchaKey = process.env.NEXT_PUBLIC_CAPTCHA_PUBLIC_KEY
+    if (!captchaKey) {
+        throw new Error('Captcha key not defined!')
+    }
     initializeAppCheck(app, {
-        provider: new ReCaptchaV3Provider('6LeiGiAqAAAAAAQeDs1Bi5exbUprimsJbva7-xvr'),
+        provider: new ReCaptchaV3Provider(captchaKey),
         isTokenAutoRefreshEnabled: true
     });
 }
