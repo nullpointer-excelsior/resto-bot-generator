@@ -1,8 +1,9 @@
 import { db } from "@/lib/firebase/web-firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { toast } from 'react-toastify';
-import { PendingOrderDocument } from "./model/order-pending-document";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PendingOrderDocument } from "./model/order-pending-document";
 
 
 interface OrderItemProps {
