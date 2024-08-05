@@ -4,9 +4,10 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { db } from '../../lib/firebase/web-firebase';
+import { app, db } from '../../lib/firebase/web-firebase';
 import { PendingOrderDocument } from './model/order-pending-document';
 import useValidateOpenAiApiKey from '../../app/hooks/useValidateOpenAiApiKey';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>) {
 
@@ -35,6 +36,23 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
             ])
         });
         return () => unsubscribe();
+    }, [])
+
+    useEffect(() => {
+        const environment =  process.env.NEXT_PUBLIC_ENVIRONMENT
+        console.log('Environment:', environment)
+        if ( environment === 'prod') {
+            console.log('app-chek initizialized')
+            const captchaKey = process.env.NEXT_PUBLIC_CAPTCHA_PUBLIC_KEY
+            // console.log('capcha', captchaKey)
+            if (!captchaKey) {
+                throw new Error('Captcha key not defined!')
+            }
+            initializeAppCheck(app, {
+                provider: new ReCaptchaV3Provider(captchaKey),
+                isTokenAutoRefreshEnabled: true
+            });
+        }
     }, [])
 
     
