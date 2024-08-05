@@ -2,6 +2,7 @@ import { db } from "@/lib/firebase/web-firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import { PendingOrderDocument } from "./model/order-pending-document";
+import { useEffect, useState } from "react";
 
 
 interface OrderItemProps {
@@ -18,6 +19,16 @@ function calculateTimeElapsed(timestamp: Date): string {
 
 const OrderItem: React.FC<OrderItemProps> = ({ order }: OrderItemProps) => {
     const { tableNumber, timestamp, items, id } = order
+
+    const [timeElapsed, setTimeElapsed] = useState(calculateTimeElapsed(timestamp));
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimeElapsed(calculateTimeElapsed(timestamp));
+        }, 60000); 
+
+        return () => clearInterval(intervalId); 
+    }, [timestamp]);
 
     const onCLickOrder = (orderId: string) => {
         toast.success(`Orden mesa ${tableNumber} tomada! ${items.join("\n")}`, {
@@ -44,7 +55,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }: OrderItemProps) => {
                 </div>
             </div>
             <div className='px-10 space-x-1 space-y-1 content-center'>
-                <p className="text-lime-600 w-56 font-semibold text-xl py-2">{calculateTimeElapsed(timestamp)}</p>
+                <p className="text-lime-600 w-56 font-semibold text-xl py-2">{timeElapsed}</p>
                 {items.map((item, index) => (
                     <p key={index} className="inline-block w-auto bg-amber-800 text-sm text-center text-white px-4 py-2 rounded-full border-spacing-5">{item}</p>
                 ))}
