@@ -9,7 +9,9 @@ const Header: React.FC = () => {
                 <BellDot className='w-12 h-12 stroke-white' />
                 <p className="text-3xl font-bold text-white">Pedidos en espera</p>
             </div>
-            <span className='text-base text-neutral-400 '>En este dashboard podras visualizar los pedidos que tus clientes hacen por medio de restosbot y el acceso a los chatbots</span>
+            <span className='text-xl text-neutral-400 '>
+                En este dashboard podrás visualizar los pedidos que tus clientes que hacen por medio de RestoBot.
+            </span>
         </div>
     );
 };

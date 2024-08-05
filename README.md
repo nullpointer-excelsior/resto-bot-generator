@@ -30,10 +30,9 @@ para ue extraiga el texto y lo muestre
 - [x] sanitize files
 - [ ] select model in create chatbot
 - [x] escribiendo como mensaje para mas claridad en chat
-- [ ] id corta
 - [x] ejemplos de menu para subir
 - [ ] fotos y descripcion
 - [ ] seguridad firebase
-- [ ] not found page ui
 - [x] error control
+- [x] gramatica
 

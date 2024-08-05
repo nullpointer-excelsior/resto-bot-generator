@@ -20,7 +20,7 @@ export default function Page() {
       <div className="flex flex-col items-center py-10 bg-black/50 w-2/3 shadow-md border border-white rounded-xl space-x-4">
         <p className="text-3xl py-6 font-bold text-lime-700">Registro Modelo IA</p>
         <div className=' text-sm'>
-          <p className="text-white text-xl p-4">Para usar Restobot deberás registrar una APIKEY de Openia . esta apikey NO se guarda en ninguna base de datossolo deforma local en el navegador de tu computador</p>
+          <p className="text-white text-xl p-4">Para usar Restobot, deberás registrar una API KEY de OpenIA. Esta API KEY no se guarda en ninguna base de datos, solo de forma local en el navegador de tu computadora.</p>
           <div className="flex flex-col items-center gap-4 m-4">
             <TextInput
               className="bg-transparent text-white w-2/3"

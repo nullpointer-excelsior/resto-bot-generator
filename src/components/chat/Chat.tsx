@@ -98,7 +98,7 @@ export default function Chat({ restaurantId }: Readonly<{ restaurantId: string }
 
         <div className="h-1/8 bg-orange-800">
           <form className="flex flex-row justify-center p-4 space-x-2 " onSubmit={onSubmit}>
-            <TextInput value={input} placeholder="Say something..." onChange={e => setInput(e.target.value)} />
+            <TextInput value={input} placeholder="Pide algo delicioso..." onChange={e => setInput(e.target.value)} />
             <PrimaryButton disabled={input === ''} onClick={(e: any) => onSubmit(e)} >ENVIAR</PrimaryButton>
           </form>
           <div className='text-white  text-center p-6'>
