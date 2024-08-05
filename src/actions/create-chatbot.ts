@@ -78,7 +78,7 @@ async function image2Base64(data: FormData) {
   if (!file) {
     throw new Error('No file uploaded')
   };
-  const validMimeTypes = ['application/pdf', 'image/png', 'image/jpg', 'image/jpeg']
+  const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg']
   //const validMimeTypes = ['application/pdf', ]
   if (!validMimeTypes.includes(file.type)) {
     throw new Error('Filetype not supported: ' + file.type);
@@ -98,7 +98,7 @@ async function image2Base64(data: FormData) {
 }
 
 function generateChatbotUrl(restaurant: Restaurant) {
-  return process.env.CHAT_HOST_URL + `/${restaurant.id}`
+  return `/${restaurant.id}`
 }
 
 export async function createChatBot(formData: FormData): Promise<CreateChatBotResponse> {

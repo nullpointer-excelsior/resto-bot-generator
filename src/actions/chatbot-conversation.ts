@@ -2,7 +2,6 @@
 import { OPENAI_MODEL } from '@/config/constants';
 import { getOrderService, getRestaurantRepository } from '@/core/ContainerService';
 import { Restaurant } from '@/core/model/Restaurant';
-// import { openai } from '@ai-sdk/openai';
 import { CoreMessage, generateText, tool } from 'ai';
 import { z } from 'zod';
 import { Product } from '../core/model/Order';
