@@ -13,7 +13,7 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
 
     const [pendingOrders, setPendingOrders] = useState<PendingOrderDocument[]>([])
     useValidateOpenAiApiKey()
-    
+
     useEffect(() => {
         const q = query(collection(db, "orders"), where("chatbot", "==", chatbot), where("isPending", "==", true));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -39,9 +39,9 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
     }, [])
 
     useEffect(() => {
-        const environment =  process.env.NEXT_PUBLIC_ENVIRONMENT
+        const environment = process.env.NEXT_PUBLIC_ENVIRONMENT
         console.log('Environment:', environment)
-        if ( environment === 'prod') {
+        if (environment === 'prod') {
             console.log('app-chek initizialized')
             const captchaKey = process.env.NEXT_PUBLIC_CAPTCHA_PUBLIC_KEY
             if (!captchaKey) {
@@ -61,8 +61,13 @@ export default function OrdersPending({ chatbot }: Readonly<{ chatbot: string }>
     }, [pendingOrders])
 
     const playSound = () => {
-        const audio = new Audio('/alert-order.mp3');
-        audio.play();
+        try {
+            const audio = new Audio('/alert-order.mp3');
+            audio.play();
+        } catch (e: any) {
+            console.warn(e.message)
+        }
+
     };
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
